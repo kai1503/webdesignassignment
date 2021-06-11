@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="checkout.css">
+    <link rel="stylesheet" href="common.css">
+    <script type="text/javascript" src="../js/cart.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			//Bind the event to the button
+			$("input[value='Add to Cart']").click(function () {
+				//Find the td by the button, get all the brother td by td
+				//Get the first one inside
+				var name = $(this).parent().siblings().eq(0).text();
+				var price = $(this).parent().siblings().eq(1).text();
+				var tr = $("<tr></tr>");
+				//Add product name and unit price td
+				var nametd = $("<td></td");
+				nametd.text(name);
+				var pricetd = $("<td></td");
+				pricetd.text(price);
+
+				//Add purchase quantity td
+				var numtd = $("<td><input type='button' value='-' onclick='numfn(-1)'><span>1</span><input type='button' value='+' onclick='numfn(1)'></td");
+
+
+				//Added amount
+				var moneytd = $("<td></td");
+				moneytd.text(price);
+
+				//Add operation
+				var deltd = $("<td><input type='button' value='Delete'  onclick='delfn()'></td>");
+				//Add the trade name and unit price td to tr
+				tr.append(nametd);
+				tr.append(pricetd);
+				tr.append(numtd);
+				tr.append(moneytd);
+				tr.append(deltd);
+				//Load the tr into the table
+				$("#total").before(tr);
+				//Total calculation
+				calfn();
+			})
+		})
+		function delfn() {
+			var obj = event.target || event.srcElement;
+			//Get the tr corresponding to the button and delete it
+			$(obj).parent().parent().remove();
+			//Total calculation
+			calfn();
+		}
+		function numfn(x) {
+			//To get the original value
+			var obj = event.target || event.srcElement;
+			var oldCount = parseInt($(obj).siblings("span").text());
+			//Put the calculated value back in
+			var newCount = oldCount + x;
+			if (newCount <= 1) {
+				newCount = 1;
+			}
+			$(obj).siblings("span").text(newCount);
+			//Get the unit price
+			var price = $(obj).parent().prev().text();
+			//Modification amount
+			$(obj).parent().next().text(price * newCount);
+			//Total calculation
+			calfn();
+		}
+		//Method of calculating total price
+		function calfn() {
+			var total = 0;
+			//Get all the tr’s in the second table and go through them
+			$("table:last tr").each(function () {
+				//Find the fourth child (dollar td) from tr
+				var moneytd = $(this).children().eq(3);
+				//Get the amount from td
+				var money = parseFloat(moneytd.text());
+				//Exclude the first and last lines
+				if (!isNaN(money)) {
+					total += money;
+				}
+			})
+			//Display total price
+			$("#total>td").text("Total：" + "$" + total);
+		}
+	</script>
+</head>
+
+</head>
+<body>
+    <header id="head">
+        <!--header-->
+        <div class="head">
+            <div class="center clearfix">
+                <div class="left"><img src="images/logo.png" alt=""></div>
+                <div class="right">
+                    <ul>
+                        <li><a href="#" class="noborder">MALAYSIA</a></li>
+                        <li><a href="#" class="noborder margin">SINGAPORE</a></li>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!--search-->
+        <div class="center clearfix">
+            <div class="sBox right">
+                <input type="text" value="Dog Man #8 : Fetch-22" />
+                <a href="javascript:;"></a>
+            </div>
+        </div>
+
+        <!--navugation-->
+        <nav class="nav">
+            <div class="center clearfix">
+                <ul class="navBar">
+                    <li class="active"><a href="product.html">BOOKS BY CATEGORY</a></li>
+                    <li id="category"><a href="index.html">HOMEPAGE</a></li>
+                    <li><a href="#">STORE</a></li>
+                </ul>
+                <!-- Navigation Bar-->
+                <div class="cartWrap">
+                    <i>0</i>
+                    <div class="cart"></div>
+                </div>
+            </div>
+    </header>
+    </header>
+
+    <div id="bkimg">
+        <img src="images/bkimg6.png" alt="">
+    </div>
+    
+    <table id="picture">
+		<tr>
+			<td><a href="./Item Page 1.html"><img src="images/book2.jpg" alt="Oops!" id="p1"></a></td>
+		</tr>
+		<tr>
+			<td><a href="./Item Page 2.html"><img src="images/9780571334650.jpg" alt="Oops!" id="p2"></a></td>
+		</tr>
+	</table>
+	<table id="productlist">
+		<tr>
+			<td>Dog mans</td>
+			<td>$12.48</td>
+			<td>
+				<input type="button" value="Add to Cart" class="addtocart">
+			</td>
+		</tr>
+		<tr>
+			<td>Normal People
+                By Sally Rooney
+                </td>
+			<td>$13</td>
+			<td>
+				<input type="button" value="Add to Cart" class="addtocart">
+			</td>
+		</tr>
+		<tr>
+	
+	</table>
+	<h1>Cart</h1>
+	<table id="cart">
+		<tr>
+			<th>Product Name</th>
+			<th>Price</th>
+			<th>Amount</th>
+			<th>Subtotal</th>
+			<th>Operation</th>
+		</tr>
+		<tr id="total">
+			<td colspan="5">Total:$0</td>
+		</tr>
+	</table>
+    <div id="checkout">	<a href="final.html"><button>checkout</button></div></a>
+
+
+    </section>
+
+
+</body>
+</html>
